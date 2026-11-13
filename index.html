@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LTE2E | 모든 테크가 내 머리에 들어갈 때까지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+JP:wght@400;600&family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Sans+SC:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #090b10;
+      --bg-secondary: #11151f;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent-gold: #d4af37;
+      --accent-blue: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans KR', 'Noto Sans JP', 'Noto Sans SC', 'Noto Sans Arabic', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 배경 오로라 & 클래식 그리드 애니메이션 */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      z-index: -2;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+    }
+
+    .ambient-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(110px);
+      z-index: -1;
+      opacity: 0.45;
+      animation: orbDrift 14s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, #2563eb, transparent 70%);
+      top: -100px;
+      left: -100px;
+    }
+
+    .orb-2 {
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, #b45309, transparent 70%);
+      bottom: -80px;
+      right: -80px;
+      animation-delay: -5s;
+    }
+
+    @keyframes orbDrift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(45px, 35px) scale(1.15); }
+    }
+
+    /* 네비게이션 헤더 */
+    header {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: fadeDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .brand-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-badge {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      padding: 3px 8px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: var(--accent-gold);
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    /* 메인 히어로 섹션 */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', 'Noto Sans KR', serif;
+      font-size: clamp(2.8rem, 7vw, 4.8rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.15;
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 70%, #d4af37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: 0;
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+
+    .hero-slogan {
+      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+      color: var(--text-muted);
+      font-weight: 300;
+      max-width: 620px;
+      line-height: 1.7;
+      margin-bottom: 52px;
+      opacity: 0;
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+    }
+
+    /* 클래식 디바이더 */
+    .classic-divider {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+      margin: 0 auto 52px;
+      opacity: 0;
+      animation: scaleIn 0.8s ease 0.55s forwards;
+    }
+
+    /* 소셜 & 컨택트 카드 그리드 */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      width: 100%;
+      opacity: 0;
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
+    }
+
+    @media (max-width: 768px) {
+      .social-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .social-card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      backdrop-filter: blur(12px);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), 
+                  border-color 0.35s ease, 
+                  box-shadow 0.35s ease;
+      overflow: hidden;
+    }
+
+    .social-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .social-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(212, 175, 55, 0.45);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 25px rgba(212, 175, 55, 0.12);
+    }
+
+    .social-card:hover::before {
+      opacity: 1;
+    }
+
+    .icon-wrapper {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease;
+    }
+
+    .social-card:hover .icon-wrapper {
+      transform: scale(1.12) rotate(-4deg);
+    }
+
+    .card-youtube:hover .icon-wrapper { background: rgba(255, 0, 0, 0.15); border-color: rgba(255, 0, 0, 0.4); }
+    .card-discord:hover .icon-wrapper { background: rgba(88, 101, 242, 0.15); border-color: rgba(88, 101, 242, 0.4); }
+    .card-mail:hover .icon-wrapper { background: rgba(212, 175, 55, 0.15); border-color: rgba(212, 175, 55, 0.4); }
+
+    .social-card svg {
+      width: 28px;
+      height: 28px;
+      transition: transform 0.3s ease;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 둥둥 뜨는 다국어 플로팅 버튼 및 메뉴 */
+    .lang-floating-container {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .lang-menu {
+      background: rgba(17, 21, 31, 0.92);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      backdrop-filter: blur(16px);
+      border-radius: 16px;
+      padding: 8px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 155px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+      opacity: 0;
+      transform: translateY(15px) scale(0.92);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: bottom right;
+    }
+
+    .lang-menu.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .lang-option {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s ease, color 0.2s ease;
+      font-family: inherit;
+    }
+
+    .lang-option:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .lang-option.selected {
+      background: rgba(212, 175, 55, 0.16);
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .lang-fab {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      color: var(--accent-gold);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 18px rgba(212, 175, 55, 0.2);
+      /* 붕 뜨는 플로팅 애니메이션 */
+      animation: floatBounce 3.2s ease-in-out infinite;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .lang-fab:hover {
+      animation-play-state: paused;
+      transform: scale(1.1);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 175, 55, 0.4);
+    }
+
+    @keyframes floatBounce {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-11px);
+      }
+    }
+
+    /* Footer & Copyright */
+    footer {
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 28px 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      background: rgba(9, 11, 16, 0.7);
+      backdrop-filter: blur(8px);
+    }
+
+    /* 키프레임 모음 */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      to {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+
+  <header>
+    <a href="#" class="brand-logo">
+      LTE2E
+      <span class="brand-badge">Official</span>
+    </a>
+  </header>
+
+  <main>
+    <div class="hero-eyebrow" data-i18n="eyebrow">TECH & HARDWARE ARCHIVE</div>
+    <h1 class="hero-title">LTE2E</h1>
+    <p class="hero-slogan" data-i18n="slogan">모든 테크가 내 머리에 들어갈 때까지.</p>
+    
+    <div class="classic-divider"></div>
+
+    <div class="social-grid">
+      <!-- YouTube 카드 -->
+      <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-card card-youtube">
+        <div class="icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="#FF0000">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </div>
+        <div class="card-title" data-i18n="yt_title">YouTube</div>
+        <div class="card-desc" data-i18n="yt_desc">최신 기기 리뷰와 테크 인사이트 영상 보기</div>
+      </a>
+
+      <!-- Discord 카드 -->
+      <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="social-card card-discord">
+        <div class="icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="#5865F2">
+            <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+          </svg>
+        </div>
+        <div class="card-title" data-i18n="dc_title">Discord</div>
+        <div class="card-desc" data-i18n="dc_desc">커뮤니티 참여 및 실시간 테크 소통</div>
+      </a>
+
+      <!-- Mail 카드 -->
+      <a href="mailto:contect@krpjw-1119.kro.kr" class="social-card card-mail">
+        <div class="icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="16" x="2" y="4" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+        </div>
+        <div class="card-title" data-i18n="mail_title">E-Mail</div>
+        <div class="card-desc" data-i18n="mail_desc">비즈니스 문의 및 협업 제안 보내기</div>
+      </a>
+    </div>
+  </main>
+
+  <!-- 둥둥 뜨는 다국어 선택 플로팅 버튼 -->
+  <div class="lang-floating-container">
+    <div class="lang-menu" id="langMenu">
+      <button class="lang-option selected" data-lang="ko"><span>한국어</span><span>KR</span></button>
+      <button class="lang-option" data-lang="en"><span>English</span><span>EN</span></button>
+      <button class="lang-option" data-lang="zh"><span>中文</span><span>CN</span></button>
+      <button class="lang-option" data-lang="ja"><span>日本語</span><span>JP</span></button>
+      <button class="lang-option" data-lang="ar"><span>العربية</span><span>AR</span></button>
+      <button class="lang-option" data-lang="es"><span>Español</span><span>ES</span></button>
+      <button class="lang-option" data-lang="ru"><span>Русский</span><span>RU</span></button>
+    </div>
+
+    <button class="lang-fab" id="langToggle" aria-label="언어 선택 / Select Language">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+        <path d="M2 12h20"/>
+      </svg>
+    </button>
+  </div>
+
+  <footer>
+    <p data-i18n="copyright">&copy; 2026 LTE2E. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const translations = {
+      ko: {
+        eyebrow: "TECH & HARDWARE ARCHIVE",
+        slogan: "모든 테크가 내 머리에 들어갈 때까지.",
+        yt_title: "YouTube",
+        yt_desc: "최신 기기 리뷰와 테크 인사이트 영상 보기",
+        dc_title: "Discord",
+        dc_desc: "커뮤니티 참여 및 실시간 테크 소통",
+        mail_title: "E-Mail",
+        mail_desc: "비즈니스 문의 및 협업 제안 보내기",
+        copyright: "© 2026 LTE2E. All rights reserved."
+      },
+      en: {
+        eyebrow: "TECH & HARDWARE ARCHIVE",
+        slogan: "Until all technology enters my mind.",
+        yt_title: "YouTube",
+        yt_desc: "Watch the latest device reviews and tech insights",
+        dc_title: "Discord",
+        dc_desc: "Join the community and chat about tech in real time",
+        mail_title: "E-Mail",
+        mail_desc: "Send business inquiries and collaboration proposals",
+        copyright: "© 2026 LTE2E. All rights reserved."
+      },
+      zh: {
+        eyebrow: "科技与硬件档案",
+        slogan: "直到所有科技都融入我的脑海。",
+        yt_title: "YouTube",
+        yt_desc: "观看最新设备评测与科技深度解析",
+        dc_title: "Discord",
+        dc_desc: "加入社区，实时交流科技动态",
+        mail_title: "电子邮件",
+        mail_desc: "发送商务合作与咨询邮件",
+        copyright: "© 2026 LTE2E. 保留所有权利。"
+      },
+      ja: {
+        eyebrow: "テック＆ハードウェアアーカイブ",
+        slogan: "すべてのテクノロジーが頭に入るまで。",
+        yt_title: "YouTube",
+        yt_desc: "最新デバイスレビューとテック解説動画を見る",
+        dc_title: "Discord",
+        dc_desc: "コミュニティに参加してリアルタイムで交流",
+        mail_title: "Eメール",
+        mail_desc: "ビジネスのお問い合わせ・コラボのご提案",
+        copyright: "© 2026 LTE2E. All rights reserved."
+      },
+      ar: {
+        eyebrow: "أرشيف التقنية والأجهزة",
+        slogan: "حتى تدخل كل التقنيات إلى عقلي.",
+        yt_title: "يوتيوب",
+        yt_desc: "شاهد أحدث مراجعات الأجهزة والرؤى التقنية",
+        dc_title: "ديسكورد",
+        dc_desc: "انضم إلى المجتمع وتواصل حول التقنية مباشرة",
+        mail_title: "البريد الإلكتروني",
+        mail_desc: "أرسل استفسارات الأعمال ومقترحات التعاون",
+        copyright: "© 2026 LTE2E. جميع الحقوق محفوظة."
+      },
+      es: {
+        eyebrow: "ARCHIVO DE TECNOLOGÍA Y HARDWARE",
+        slogan: "Hasta que toda la tecnología entre en mi mente.",
+        yt_title: "YouTube",
+        yt_desc: "Mira las últimas reseñas de dispositivos y tecnología",
+        dc_title: "Discord",
+        dc_desc: "Únete a la comunidad y charla sobre tecnología en vivo",
+        mail_title: "Correo",
+        mail_desc: "Envía consultas comerciales y propuestas de colaboración",
+        copyright: "© 2026 LTE2E. Todos los derechos reservados."
+      },
+      ru: {
+        eyebrow: "АРХИВ ТЕХНОЛОГИЙ И ЖЕЛЕЗА",
+        slogan: "Пока все технологии не поместятся в моей голове.",
+        yt_title: "YouTube",
+        yt_desc: "Смотрите обзоры новейших устройств и аналитику",
+        dc_title: "Discord",
+        dc_desc: "Присоединяйтесь к сообществу для общения в реальном времени",
+        mail_title: "Эл. почта",
+        mail_desc: "Деловые запросы и предложения о сотрудничестве",
+        copyright: "© 2026 LTE2E. Все права защищены."
+      }
+    };
+
+    const langToggle = document.getElementById('langToggle');
+    const langMenu = document.getElementById('langMenu');
+    const langOptions = document.querySelectorAll('.lang-option');
+
+    // 플로팅 버튼 클릭 시 메뉴 토글
+    langToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      langMenu.classList.toggle('active');
+    });
+
+    // 바깥 영역 클릭 시 메뉴 닫기
+    document.addEventListener('click', () => {
+      langMenu.classList.remove('active');
+    });
+
+    // 언어 변경 함수
+    function setLanguage(lang) {
+      const dict = translations[lang];
+      if (!dict) return;
+
+      document.documentElement.lang = lang;
+      // 아랍어 선택 시 우측에서 좌측(RTL) 레이아웃 자동 전환
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.style.opacity = '0';
+          setTimeout(() => {
+            el.textContent = dict[key];
+            el.style.transition = 'opacity 0.25s ease';
+            el.style.opacity = '1';
+          }, 120);
+        }
+      });
+
+      langOptions.forEach(btn => {
+        btn.classList.toggle('selected', btn.dataset.lang === lang);
+      });
+    }
+
+    langOptions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        setLanguage(btn.dataset.lang);
+        langMenu.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>
