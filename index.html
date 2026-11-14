@@ -6,18 +6,18 @@
   <title>LTE2E | 모든 테크가 내 머리에 들어갈 때까지</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+JP:wght@400;600&family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Sans+SC:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+JP:wght@400;600&family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Sans+SC:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #090b10;
-      --bg-secondary: #11151f;
-      --card-bg: rgba(255, 255, 255, 0.03);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      --accent-gold: #d4af37;
-      --accent-blue: #3b82f6;
-      --accent-glow: rgba(59, 130, 246, 0.25);
+      --bg-primary: #06080d;
+      --bg-secondary: #0e131f;
+      --card-bg: rgba(16, 21, 33, 0.55);
+      --card-border: rgba(255, 255, 255, 0.09);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-gold: #f59e0b;
+      --accent-gold-light: #fde68a;
+      --accent-blue: #38bdf8;
     }
 
     * {
@@ -35,94 +35,124 @@
       flex-direction: column;
       overflow-x: hidden;
       position: relative;
+      user-select: none;
     }
 
-    /* 배경 오로라 & 클래식 그리드 애니메이션 */
+    /* 실시간 스파크 캔버스 */
+    #sparkCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 클래식 건축 그리드 + 원근감 */
     .bg-grid {
       position: fixed;
       inset: 0;
       background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 48px 48px;
-      z-index: -2;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+        linear-gradient(to right, rgba(245, 158, 11, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+      background-size: 56px 56px;
+      z-index: 0;
+      mask-image: radial-gradient(circle at 50% 45%, black 35%, transparent 88%);
+      animation: gridPulse 8s ease-in-out infinite alternate;
     }
 
+    @keyframes gridPulse {
+      0% { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.03); }
+    }
+
+    /* 배경 오로라 오브 */
     .ambient-orb {
       position: fixed;
       border-radius: 50%;
-      filter: blur(110px);
-      z-index: -1;
+      filter: blur(120px);
+      z-index: 0;
       opacity: 0.45;
-      animation: orbDrift 14s ease-in-out infinite alternate;
+      animation: orbDrift 11s ease-in-out infinite alternate;
+      pointer-events: none;
     }
 
     .orb-1 {
-      width: 420px;
-      height: 420px;
-      background: radial-gradient(circle, #2563eb, transparent 70%);
-      top: -100px;
+      width: 460px;
+      height: 460px;
+      background: radial-gradient(circle, #0284c7, transparent 70%);
+      top: -120px;
       left: -100px;
     }
 
     .orb-2 {
-      width: 380px;
-      height: 380px;
-      background: radial-gradient(circle, #b45309, transparent 70%);
-      bottom: -80px;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, #d97706, transparent 70%);
+      bottom: -100px;
       right: -80px;
-      animation-delay: -5s;
+      animation-delay: -4s;
     }
 
     @keyframes orbDrift {
       0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(45px, 35px) scale(1.15); }
+      100% { transform: translate(55px, 40px) scale(1.18); }
     }
 
     /* 네비게이션 헤더 */
     header {
+      position: relative;
+      z-index: 10;
       width: 100%;
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 28px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      animation: fadeDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: slamDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     .brand-logo {
       font-family: 'Cinzel', serif;
-      font-size: 1.65rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
       color: var(--text-main);
       text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      transition: text-shadow 0.3s ease;
+    }
+
+    .brand-logo:hover {
+      text-shadow: 0 0 18px rgba(245, 158, 11, 0.7);
     }
 
     .brand-badge {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      padding: 3px 8px;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      color: var(--accent-gold);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      padding: 4px 10px;
+      border: 1px solid rgba(245, 158, 11, 0.55);
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--accent-gold-light);
       border-radius: 4px;
       text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
     }
 
     /* 메인 히어로 섹션 */
     main {
+      position: relative;
+      z-index: 10;
       flex: 1;
       width: 100%;
-      max-width: 960px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 60px 24px 80px;
+      padding: 50px 24px 90px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -131,57 +161,103 @@
 
     .hero-eyebrow {
       font-size: 0.85rem;
-      letter-spacing: 0.25em;
+      font-weight: 600;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--accent-gold);
+      color: var(--accent-gold-light);
       margin-bottom: 18px;
       opacity: 0;
-      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+      text-shadow: 0 0 14px rgba(245, 158, 11, 0.5);
+      animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    }
+
+    /* 스파크 쉬머 타이틀 */
+    .hero-title-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 22px;
+      opacity: 0;
+      animation: electricStrike 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.22s forwards;
     }
 
     .hero-title {
       font-family: 'Cinzel', 'Noto Sans KR', serif;
-      font-size: clamp(2.8rem, 7vw, 4.8rem);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      line-height: 1.15;
-      margin-bottom: 22px;
-      background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 70%, #d4af37 100%);
+      font-size: clamp(3.2rem, 8.5vw, 5.6rem);
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      line-height: 1.1;
+      background: linear-gradient(
+        110deg,
+        #ffffff 20%,
+        #93c5fd 38%,
+        #fde68a 50%,
+        #ffffff 62%,
+        #cbd5e1 85%
+      );
+      background-size: 220% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      opacity: 0;
-      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+      animation: metalShimmer 4s linear infinite;
+      filter: drop-shadow(0 0 28px rgba(56, 189, 248, 0.25));
+    }
+
+    @keyframes metalShimmer {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+
+    @keyframes electricStrike {
+      0% { opacity: 0; transform: scale(1.18) translateY(15px); filter: brightness(2.5); }
+      40% { opacity: 1; transform: scale(0.98) translateY(0); filter: brightness(1.6); }
+      60% { transform: scale(1.01); }
+      100% { opacity: 1; transform: scale(1); filter: brightness(1); }
     }
 
     .hero-slogan {
-      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+      font-size: clamp(1.08rem, 2.5vw, 1.38rem);
       color: var(--text-muted);
-      font-weight: 300;
-      max-width: 620px;
+      font-weight: 400;
+      max-width: 640px;
       line-height: 1.7;
-      margin-bottom: 52px;
+      margin-bottom: 48px;
       opacity: 0;
-      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.38s forwards;
     }
 
-    /* 클래식 디바이더 */
+    /* 클래식 스파크 디바이더 */
     .classic-divider {
-      width: 120px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-      margin: 0 auto 52px;
+      position: relative;
+      width: 180px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-blue), var(--accent-gold), transparent);
+      margin: 0 auto 54px;
       opacity: 0;
-      animation: scaleIn 0.8s ease 0.55s forwards;
+      animation: scaleIn 0.7s ease 0.48s forwards;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
     }
 
-    /* 소셜 & 컨택트 카드 그리드 */
+    .classic-divider::after {
+      content: '◆';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--accent-gold-light);
+      font-size: 0.75rem;
+      background: var(--bg-primary);
+      padding: 0 8px;
+      text-shadow: 0 0 10px var(--accent-gold);
+    }
+
+    /* 3D 틸트 & 스파크 카드 그리드 */
     .social-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
+      gap: 24px;
       width: 100%;
+      perspective: 1000px;
       opacity: 0;
-      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
+      animation: fadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.58s forwards;
     }
 
     @media (max-width: 768px) {
@@ -194,83 +270,105 @@
       position: relative;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 32px 24px;
+      border-radius: 18px;
+      padding: 36px 24px;
       text-decoration: none;
       color: var(--text-main);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 16px;
-      backdrop-filter: blur(12px);
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), 
-                  border-color 0.35s ease, 
-                  box-shadow 0.35s ease;
+      backdrop-filter: blur(14px);
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
       overflow: hidden;
     }
 
+    /* 마우스 추적 스파크 스포트라이트 */
     .social-card::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 70%);
+      background: radial-gradient(
+        350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(245, 158, 11, 0.18),
+        rgba(56, 189, 248, 0.08) 40%,
+        transparent 75%
+      );
       opacity: 0;
-      transition: opacity 0.35s ease;
-    }
-
-    .social-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: rgba(212, 175, 55, 0.45);
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 25px rgba(212, 175, 55, 0.12);
+      transition: opacity 0.3s ease;
+      pointer-events: none;
     }
 
     .social-card:hover::before {
       opacity: 1;
     }
 
+    .social-card:hover {
+      border-color: rgba(245, 158, 11, 0.65);
+      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.85), 
+                  0 0 30px rgba(245, 158, 11, 0.22);
+    }
+
     .icon-wrapper {
-      width: 60px;
-      height: 60px;
-      border-radius: 14px;
+      width: 66px;
+      height: 66px;
+      border-radius: 16px;
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease;
+      transform: translateZ(24px);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                  background 0.3s ease, 
+                  box-shadow 0.3s ease;
     }
 
     .social-card:hover .icon-wrapper {
-      transform: scale(1.12) rotate(-4deg);
+      transform: translateZ(34px) scale(1.15) rotate(-5deg);
     }
 
-    .card-youtube:hover .icon-wrapper { background: rgba(255, 0, 0, 0.15); border-color: rgba(255, 0, 0, 0.4); }
-    .card-discord:hover .icon-wrapper { background: rgba(88, 101, 242, 0.15); border-color: rgba(88, 101, 242, 0.4); }
-    .card-mail:hover .icon-wrapper { background: rgba(212, 175, 55, 0.15); border-color: rgba(212, 175, 55, 0.4); }
+    .card-youtube:hover .icon-wrapper { 
+      background: rgba(255, 0, 0, 0.18); 
+      border-color: rgba(255, 68, 68, 0.6); 
+      box-shadow: 0 0 22px rgba(255, 0, 0, 0.45);
+    }
+    .card-discord:hover .icon-wrapper { 
+      background: rgba(88, 101, 242, 0.2); 
+      border-color: rgba(114, 137, 218, 0.65); 
+      box-shadow: 0 0 22px rgba(88, 101, 242, 0.45);
+    }
+    .card-mail:hover .icon-wrapper { 
+      background: rgba(245, 158, 11, 0.2); 
+      border-color: rgba(253, 230, 138, 0.65); 
+      box-shadow: 0 0 22px rgba(245, 158, 11, 0.45);
+    }
 
     .social-card svg {
-      width: 28px;
-      height: 28px;
-      transition: transform 0.3s ease;
+      width: 30px;
+      height: 30px;
     }
 
     .card-title {
-      font-size: 1.15rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      transform: translateZ(16px);
     }
 
     .card-desc {
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.55;
+      transform: translateZ(10px);
     }
 
-    /* 둥둥 뜨는 다국어 플로팅 버튼 및 메뉴 */
+    /* 둥둥 뜨는 다국어 플로팅 버튼 & 펄스 파동 */
     .lang-floating-container {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
+      bottom: 32px;
+      right: 32px;
       z-index: 1000;
       display: flex;
       flex-direction: column;
@@ -278,21 +376,21 @@
     }
 
     .lang-menu {
-      background: rgba(17, 21, 31, 0.92);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      backdrop-filter: blur(16px);
+      background: rgba(12, 16, 26, 0.94);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      backdrop-filter: blur(18px);
       border-radius: 16px;
       padding: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       display: flex;
       flex-direction: column;
       gap: 4px;
-      min-width: 155px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+      min-width: 162px;
+      box-shadow: 0 22px 48px rgba(0, 0, 0, 0.75), 0 0 20px rgba(245, 158, 11, 0.15);
       opacity: 0;
-      transform: translateY(15px) scale(0.92);
+      transform: translateY(18px) scale(0.9);
       pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
       transform-origin: bottom right;
     }
 
@@ -314,102 +412,105 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
       font-family: inherit;
     }
 
     .lang-option:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(245, 158, 11, 0.14);
+      transform: translateX(-3px);
     }
 
     .lang-option.selected {
-      background: rgba(212, 175, 55, 0.16);
-      color: var(--accent-gold);
-      font-weight: 600;
+      background: rgba(245, 158, 11, 0.22);
+      color: var(--accent-gold-light);
+      font-weight: 700;
+    }
+
+    .lang-fab-wrapper {
+      position: relative;
+      animation: floatBounce 3s ease-in-out infinite;
+    }
+
+    .lang-fab-wrapper:hover {
+      animation-play-state: paused;
+    }
+
+    /* 버튼 뒤 펄스 링 */
+    .lang-pulse-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(245, 158, 11, 0.6);
+      animation: pulseWave 2.4s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulseWave {
+      0% { transform: scale(0.95); opacity: 0.85; }
+      100% { transform: scale(1.55); opacity: 0; }
     }
 
     .lang-fab {
-      width: 58px;
-      height: 58px;
+      position: relative;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #1e293b, #0f172a);
-      border: 1px solid rgba(212, 175, 55, 0.5);
-      color: var(--accent-gold);
+      background: linear-gradient(135deg, #1e293b, #090d16);
+      border: 1.5px solid rgba(245, 158, 11, 0.65);
+      color: var(--accent-gold-light);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 18px rgba(212, 175, 55, 0.2);
-      /* 붕 뜨는 플로팅 애니메이션 */
-      animation: floatBounce 3.2s ease-in-out infinite;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 22px rgba(245, 158, 11, 0.3);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
     }
 
     .lang-fab:hover {
-      animation-play-state: paused;
-      transform: scale(1.1);
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 175, 55, 0.4);
+      transform: scale(1.14) rotate(18deg);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 32px rgba(245, 158, 11, 0.55);
     }
 
     @keyframes floatBounce {
-      0%, 100% {
-        transform: translateY(0px);
-      }
-      50% {
-        transform: translateY(-11px);
-      }
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-13px); }
     }
 
     /* Footer & Copyright */
     footer {
+      position: relative;
+      z-index: 10;
       width: 100%;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
       padding: 28px 24px;
       text-align: center;
       color: var(--text-muted);
       font-size: 0.85rem;
-      letter-spacing: 0.04em;
-      background: rgba(9, 11, 16, 0.7);
-      backdrop-filter: blur(8px);
+      letter-spacing: 0.05em;
+      background: rgba(6, 8, 13, 0.8);
+      backdrop-filter: blur(10px);
     }
 
-    /* 키프레임 모음 */
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(26px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes fadeDown {
-      from {
-        opacity: 0;
-        transform: translateY(-18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    @keyframes slamDown {
+      from { opacity: 0; transform: translateY(-22px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes scaleIn {
-      from {
-        opacity: 0;
-        transform: scaleX(0);
-      }
-      to {
-        opacity: 1;
-        transform: scaleX(1);
-      }
+      from { opacity: 0; transform: scaleX(0); }
+      to { opacity: 1; transform: scaleX(1); }
     }
   </style>
 </head>
 <body>
 
+  <canvas id="sparkCanvas"></canvas>
   <div class="bg-grid"></div>
   <div class="ambient-orb orb-1"></div>
   <div class="ambient-orb orb-2"></div>
@@ -423,14 +524,16 @@
 
   <main>
     <div class="hero-eyebrow" data-i18n="eyebrow">TECH & HARDWARE ARCHIVE</div>
-    <h1 class="hero-title">LTE2E</h1>
+    <div class="hero-title-wrap">
+      <h1 class="hero-title">LTE2E</h1>
+    </div>
     <p class="hero-slogan" data-i18n="slogan">모든 테크가 내 머리에 들어갈 때까지.</p>
     
     <div class="classic-divider"></div>
 
     <div class="social-grid">
       <!-- YouTube 카드 -->
-      <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-card card-youtube">
+      <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-card card-youtube tilt-card">
         <div class="icon-wrapper">
           <svg viewBox="0 0 24 24" fill="#FF0000">
             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
@@ -441,7 +544,7 @@
       </a>
 
       <!-- Discord 카드 -->
-      <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="social-card card-discord">
+      <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="social-card card-discord tilt-card">
         <div class="icon-wrapper">
           <svg viewBox="0 0 24 24" fill="#5865F2">
             <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
@@ -452,9 +555,9 @@
       </a>
 
       <!-- Mail 카드 -->
-      <a href="mailto:contect@krpjw-1119.kro.kr" class="social-card card-mail">
+      <a href="mailto:contect@krpjw-1119.kro.kr" class="social-card card-mail tilt-card">
         <div class="icon-wrapper">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect width="20" height="16" x="2" y="4" rx="2"/>
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
           </svg>
@@ -477,13 +580,16 @@
       <button class="lang-option" data-lang="ru"><span>Русский</span><span>RU</span></button>
     </div>
 
-    <button class="lang-fab" id="langToggle" aria-label="언어 선택 / Select Language">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
-        <path d="M2 12h20"/>
-      </svg>
-    </button>
+    <div class="lang-fab-wrapper">
+      <div class="lang-pulse-ring"></div>
+      <button class="lang-fab" id="langToggle" aria-label="언어 선택 / Select Language">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+          <path d="M2 12h20"/>
+        </svg>
+      </button>
+    </div>
   </div>
 
   <footer>
@@ -491,6 +597,130 @@
   </footer>
 
   <script>
+    /* =========================================
+       1. 전기 스파크 파티클 엔진 (Canvas)
+    ========================================= */
+    const canvas = document.getElementById('sparkCanvas');
+    const ctx = canvas.getContext('2d');
+    let sparks = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Spark {
+      constructor(x, y, burst = false) {
+        this.x = x;
+        this.y = y;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = burst ? (Math.random() * 6 + 2) : (Math.random() * 1.6 + 0.4);
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed - (burst ? 1.5 : 0.8);
+        this.gravity = burst ? 0.16 : -0.015;
+        this.friction = 0.96;
+        this.alpha = 1;
+        this.decay = burst ? (Math.random() * 0.03 + 0.02) : (Math.random() * 0.012 + 0.006);
+        this.size = burst ? (Math.random() * 2.4 + 1) : (Math.random() * 1.8 + 0.6);
+        // 골드 & 일렉트릭 블루 스파크 컬러
+        const colors = ['#fde68a', '#f59e0b', '#38bdf8', '#ffffff'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+      }
+
+      update() {
+        this.vx *= this.friction;
+        this.vy = this.vy * this.friction + this.gravity;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha -= this.decay;
+      }
+
+      draw() {
+        if (this.alpha <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = this.size;
+        ctx.lineCap = 'round';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+
+        // 불꽃 궤적 선 그리기
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x - this.vx * 2.4, this.y - this.vy * 2.4);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    // 배경에서 은은하게 피어오르는 스파크
+    setInterval(() => {
+      if (sparks.length < 90) {
+        sparks.push(new Spark(Math.random() * canvas.width, canvas.height + 10, false));
+      }
+    }, 180);
+
+    // 마우스 이동 시 미세한 스파크 꼬리
+    let lastMove = 0;
+    window.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (now - lastMove > 35) {
+        sparks.push(new Spark(e.clientX, e.clientY, true));
+        lastMove = now;
+      }
+    });
+
+    // 클릭 시 스파크 폭발 액션
+    window.addEventListener('click', (e) => {
+      for (let i = 0; i < 22; i++) {
+        sparks.push(new Spark(e.clientX, e.clientY, true));
+      }
+    });
+
+    function animateSparks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        sparks[i].update();
+        sparks[i].draw();
+        if (sparks[i].alpha <= 0) {
+          sparks.splice(i, 1);
+        }
+      }
+      requestAnimationFrame(animateSparks);
+    }
+    animateSparks();
+
+    /* =========================================
+       2. 3D 틸트 & 스포트라이트 카드 액션
+    ========================================= */
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -9;
+        const rotateY = ((x - centerX) / centerX) * 9;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      });
+    });
+
+    /* =========================================
+       3. 다국어 전환 시스템
+    ========================================= */
     const translations = {
       ko: {
         eyebrow: "TECH & HARDWARE ARCHIVE",
@@ -575,24 +805,20 @@
     const langMenu = document.getElementById('langMenu');
     const langOptions = document.querySelectorAll('.lang-option');
 
-    // 플로팅 버튼 클릭 시 메뉴 토글
     langToggle.addEventListener('click', (e) => {
       e.stopPropagation();
       langMenu.classList.toggle('active');
     });
 
-    // 바깥 영역 클릭 시 메뉴 닫기
     document.addEventListener('click', () => {
       langMenu.classList.remove('active');
     });
 
-    // 언어 변경 함수
     function setLanguage(lang) {
       const dict = translations[lang];
       if (!dict) return;
 
       document.documentElement.lang = lang;
-      // 아랍어 선택 시 우측에서 좌측(RTL) 레이아웃 자동 전환
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
